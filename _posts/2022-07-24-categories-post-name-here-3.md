@@ -1,13 +1,13 @@
 ---
-title: "[포스팅 예시] 이곳에 제목을 입력하세요"
-excerpt: "본문의 주요 내용을 여기에 입력하세요"
+title: "SwiftUI 进阶：List + NavigationStack"
+excerpt: "在列表中导航到详情页，并理解路径与状态。"
 
 categories:
   - Categories3
 tags:
-  - [tag1, tag2]
+  - [SwiftUI, iOS, NavigationStack]
 
-permalink: /categories3/post-name-here-3/
+permalink: /categories3/swiftui-list-navigation/
 
 toc: true
 toc_sticky: true
@@ -16,6 +16,51 @@ date: 2022-07-24
 last_modified_at: 2022-07-24
 ---
 
-## 🦥 본문
+## 目标
 
-본문은 여기에 ...
+- 在 `List` 中使用 `NavigationStack`
+- 通过 `NavigationLink` 跳转详情页
+- 使用模型驱动导航
+
+## 数据模型
+
+```swift
+struct Article: Identifiable, Hashable {
+    let id = UUID()
+    let title: String
+    let summary: String
+}
+
+let articles = [
+    Article(title: "TabView 基础", summary: "底部导航的关键点"),
+    Article(title: "List 基础", summary: "数组渲染与分组"),
+    Article(title: "NavigationStack", summary: "新式导航容器")
+]
+```
+
+## 列表 + 详情
+
+```swift
+NavigationStack {
+    List(articles) { article in
+        NavigationLink(value: article) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(article.title).font(.headline)
+                Text(article.summary).font(.subheadline).foregroundColor(.secondary)
+            }
+        }
+    }
+    .navigationTitle("教程")
+    .navigationDestination(for: Article.self) { article in
+        VStack(alignment: .leading, spacing: 12) {
+            Text(article.title).font(.title)
+            Text(article.summary)
+        }
+        .padding()
+    }
+}
+```
+
+## 小结
+
+使用 `NavigationStack` 和 `navigationDestination` 可以让导航状态更清晰，尤其适合复杂层级。
