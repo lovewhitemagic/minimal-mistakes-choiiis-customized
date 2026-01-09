@@ -1,13 +1,13 @@
 ---
-title: "[포스팅 예시] 이곳에 제목을 입력하세요"
-excerpt: "본문의 주요 내용을 여기에 입력하세요"
+title: "SwiftUI 03: 상태 관리 @State와 @Binding"
+excerpt: "부모-자식 뷰에서 상태를 전달하고 변경하는 기본 패턴"
 
 categories:
-  - Categories3
+  - SwiftUI
 tags:
-  - [tag1, tag2]
+  - [swiftui, state, binding]
 
-permalink: /categories3/post-name-here-3/
+permalink: /swiftui/state-binding/
 
 toc: true
 toc_sticky: true
@@ -16,6 +16,35 @@ date: 2022-07-24
 last_modified_at: 2022-07-24
 ---
 
-## 🦥 본문
+## 개요
 
-본문은 여기에 ...
+상태 관리의 기본은 `@State`와 `@Binding`입니다.
+
+## 핵심 포인트
+
+- 부모 뷰에서 `@State`로 상태 소유
+- 자식 뷰로 `@Binding` 전달
+- 버튼 액션으로 상태 변경
+
+## 간단한 예시 코드
+
+```swift
+struct ParentView: View {
+  @State private var isOn = false
+
+  var body: some View {
+    Toggle("알림", isOn: $isOn)
+    ChildView(isOn: $isOn)
+  }
+}
+
+struct ChildView: View {
+  @Binding var isOn: Bool
+
+  var body: some View {
+    Button(isOn ? "끄기" : "켜기") {
+      isOn.toggle()
+    }
+  }
+}
+```
